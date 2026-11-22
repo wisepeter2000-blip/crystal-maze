@@ -477,7 +477,49 @@ kbd {
   grid-template-columns: repeat(3, 34px);
   grid-template-rows: repeat(3, 34px);
   gap: 4px;
-  margin: 10px auto 1px;
+  margin: 0;
+}
+
+.touch-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.fire-button {
+  display: none;
+  min-width: 126px;
+  min-height: 84px;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 12px;
+  border: 2px solid var(--forest);
+  color: var(--forest-deep);
+  background: var(--coral);
+  box-shadow: 3px 3px 0 var(--forest);
+  font-size: 13px;
+}
+
+.fire-button:hover:not(:disabled) {
+  background: #ff907f;
+}
+
+.fire-button span:first-child {
+  font-size: 23px;
+  line-height: 1;
+}
+
+.fire-button span:nth-child(2) {
+  font-size: 10px;
+  line-height: 1;
+}
+
+.fire-button span:last-child {
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .direction-button {
@@ -606,6 +648,10 @@ kbd {
   .control-panel,
   .objective-panel {
     padding: 14px;
+  }
+
+  .fire-button {
+    display: inline-flex;
   }
 
   .footer-note {

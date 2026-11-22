@@ -34,7 +34,7 @@
               width="544"
               height="544"
               role="img"
-              aria-label="迷宮遊戲畫面。使用方向鍵或 WASD 移動，按空白鍵發射光彈；手機可在迷宮上滑動轉向或點方向按鈕持續前進，快速點迷宮兩下發射光束。收集所有晶點。"
+              aria-label="迷宮遊戲畫面。使用方向鍵或 WASD 移動，按空白鍵發射光彈；手機可在迷宮上滑動轉向或點方向按鈕持續前進，按靈知團隊發射光束按鈕或快速點迷宮兩下發射光束。收集所有晶點。"
             >
               您的瀏覽器不支援 Canvas；仍可使用下方的遊戲控制與狀態資訊。
             </canvas>
@@ -42,7 +42,7 @@
               <div class="overlay-mark" aria-hidden="true">✦</div>
               <p class="overlay-kicker" id="overlayKicker">準備好了嗎？</p>
               <h2 id="overlayTitle">迷宮正在等你</h2>
-              <p class="overlay-copy" id="overlayCopy">收集晶點並避開巡獵者。手機可滑動迷宮轉向，快速點兩下發射光束。</p>
+              <p class="overlay-copy" id="overlayCopy">收集晶點並避開巡獵者。手機可用方向鍵移動，按「靈知團隊發射光束」攻擊。</p>
               <button class="button button-primary" id="startButton" type="button">開始探索 <span aria-hidden="true">→</span></button>
             </div>
           </div>
@@ -57,17 +57,24 @@
               <span class="key-spacer"></span><kbd>W / ↑</kbd><span class="key-spacer"></span>
               <kbd>A / ←</kbd><kbd>S / ↓</kbd><kbd>D / →</kbd>
             </div>
-            <p class="touch-hint">滑動迷宮轉向或點方向持續前進；快速點兩下發射光束</p>
-            <div class="direction-pad" aria-label="觸控方向控制">
-              <span class="pad-spacer" aria-hidden="true"></span>
-              <button class="direction-button" type="button" data-direction="up" aria-label="向上移動"><span aria-hidden="true">↑</span></button>
-              <span class="pad-spacer" aria-hidden="true"></span>
-              <button class="direction-button" type="button" data-direction="left" aria-label="向左移動"><span aria-hidden="true">←</span></button>
-              <span class="pad-center" aria-hidden="true">✦</span>
-              <button class="direction-button" type="button" data-direction="right" aria-label="向右移動"><span aria-hidden="true">→</span></button>
-              <span class="pad-spacer" aria-hidden="true"></span>
-              <button class="direction-button" type="button" data-direction="down" aria-label="向下移動"><span aria-hidden="true">↓</span></button>
-              <span class="pad-spacer" aria-hidden="true"></span>
+            <p class="touch-hint">滑動迷宮轉向或點方向持續前進；按「靈知團隊發射光束」攻擊</p>
+            <div class="touch-controls">
+              <div class="direction-pad" aria-label="觸控方向控制">
+                <span class="pad-spacer" aria-hidden="true"></span>
+                <button class="direction-button" type="button" data-direction="up" aria-label="向上移動"><span aria-hidden="true">↑</span></button>
+                <span class="pad-spacer" aria-hidden="true"></span>
+                <button class="direction-button" type="button" data-direction="left" aria-label="向左移動"><span aria-hidden="true">←</span></button>
+                <span class="pad-center" aria-hidden="true">✦</span>
+                <button class="direction-button" type="button" data-direction="right" aria-label="向右移動"><span aria-hidden="true">→</span></button>
+                <span class="pad-spacer" aria-hidden="true"></span>
+                <button class="direction-button" type="button" data-direction="down" aria-label="向下移動"><span aria-hidden="true">↓</span></button>
+                <span class="pad-spacer" aria-hidden="true"></span>
+              </div>
+              <button class="button fire-button" id="fireButton" type="button" aria-label="靈知團隊發射光束，朝玩家最後面向射擊" disabled>
+                <span aria-hidden="true">✦</span>
+                <span>靈知團隊</span>
+                <span>發射光束</span>
+              </button>
             </div>
           </section>
 

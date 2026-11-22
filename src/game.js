@@ -21,6 +21,7 @@
     startButton: document.getElementById("startButton"),
     restartButton: document.getElementById("restartButton"),
     pauseButton: document.getElementById("pauseButton"),
+    fireButton: document.getElementById("fireButton"),
     board: document.getElementById("boardFrame"),
   };
 
@@ -239,9 +240,10 @@
     ui.overlay.hidden = true;
     ui.board.dataset.state = GAME_STATUS.PLAYING;
     ui.pauseButton.disabled = false;
+    ui.fireButton.disabled = false;
     ui.pauseButton.setAttribute("aria-pressed", "false");
     ui.pauseButton.textContent = "暫停";
-    announce("遊戲開始。方向鍵或 WASD 移動、空白鍵發射；手機可滑動迷宮轉向，快速點兩下射擊。");
+    announce("遊戲開始。方向鍵或 WASD 移動、空白鍵發射；手機可按「靈知團隊發射光束」攻擊。");
   }
 
   function pauseGame() {
@@ -253,6 +255,7 @@
     ui.board.dataset.state = GAME_STATUS.PAUSED;
     ui.pauseButton.setAttribute("aria-pressed", "true");
     ui.pauseButton.textContent = "繼續";
+    ui.fireButton.disabled = true;
     showOverlay("稍作休息", "遊戲已暫停", "你的迷宮進度已保留。", "繼續遊戲");
     announce("遊戲已暫停。");
   }
@@ -268,6 +271,7 @@
     ui.overlay.hidden = true;
     ui.pauseButton.setAttribute("aria-pressed", "false");
     ui.pauseButton.textContent = "暫停";
+    ui.fireButton.disabled = false;
     announce("遊戲已恢復。");
   }
 
@@ -292,6 +296,7 @@
     game.bullets = [];
     clearInput();
     ui.pauseButton.disabled = true;
+    ui.fireButton.disabled = true;
     ui.pauseButton.setAttribute("aria-pressed", "false");
     ui.board.dataset.state = status;
     showOverlay(kicker, title, message, "再玩一次");
@@ -797,6 +802,7 @@
   ui.startButton.addEventListener("click", handleOverlayAction);
   ui.restartButton.addEventListener("click", startGame);
   ui.pauseButton.addEventListener("click", togglePause);
+  ui.fireButton.addEventListener("click", fireBullet);
   canvas.addEventListener("pointerdown", handleCanvasPointerDown);
   canvas.addEventListener("pointerup", handleCanvasPointerUp);
   canvas.addEventListener("pointercancel", handleCanvasPointerCancel);
