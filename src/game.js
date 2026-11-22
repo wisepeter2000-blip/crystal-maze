@@ -65,6 +65,8 @@
   const GHOST_STEP_MS = 210;
   const BULLET_STEP_MS = 60;
   const FIRE_COOLDOWN_MS = 300;
+  const DOUBLE_TAP_INTERVAL_MS = 350;
+  const DOUBLE_TAP_DISTANCE = 36;
   const COLORS = {
     wall: "#226354",
     floor: "#102a25",
@@ -94,6 +96,8 @@
     nextShotAt: 0,
   };
   const pressedDirections = new Map();
+  let touchDirection = null;
+  let lastCanvasTap = null;
 
   function isWalkable(maze, col, row) {
     return row >= 0
@@ -195,6 +199,8 @@
     game.ghostStepElapsed = 0;
     game.bullets = [];
     game.nextShotAt = 0;
+    touchDirection = null;
+    lastCanvasTap = null;
     pressedDirections.clear();
   }
 
@@ -313,6 +319,8 @@
     game.player.direction = null;
     game.player.queuedDirection = null;
     game.inputDirection = null;
+    touchDirection = null;
+    lastCanvasTap = null;
     pressedDirections.clear();
     game.collisionProtectionUntil = game.elapsedMs + 2000;
     game.player.invulnerableUntil = game.collisionProtectionUntil;
@@ -499,9 +507,9 @@
     return directions[normalizedKey] || null;
   }
 
-  function syncKeyboardDirection() {
+  function syncInputDirection() {
     const activeDirections = Array.from(pressedDirections.values());
-    game.inputDirection = activeDirections.at(-1) || null;
+    game.inputDirection = activeDirections.at(-1) || touchDirection;
     game.player.queuedDirection = game.inputDirection;
     if (!game.inputDirection) {
       game.player.direction = null;
@@ -538,7 +546,7 @@
     }
     event.preventDefault();
     pressedDirections.set(event.key.toLowerCase(), direction);
-    syncKeyboardDirection();
+    syncInputDirection();
   }
 
   function handleKeyUp(event) {
@@ -547,11 +555,13 @@
       return;
     }
     pressedDirections.delete(event.key.toLowerCase());
-    syncKeyboardDirection();
+    syncInputDirection();
   }
 
   function clearInput() {
     pressedDirections.clear();
+    touchDirection = null;
+    lastCanvasTap = null;
     directionButtons.forEach((button) => button.classList.remove("is-active"));
     if (game.player) {
       game.inputDirection = null;
@@ -566,10 +576,13 @@
     }
     event.preventDefault();
     const button = event.currentTarget;
+    if (event.pointerType === "touch") {
+      touchDirection = button.dataset.direction;
+    }
     button.setPointerCapture(event.pointerId);
     button.classList.add("is-active");
     pressedDirections.set(`pointer-${event.pointerId}`, button.dataset.direction);
-    syncKeyboardDirection();
+    syncInputDirection();
   }
 
   function handleDirectionPointerEnd(event) {
@@ -579,7 +592,26 @@
     if (button.hasPointerCapture(event.pointerId)) {
       button.releasePointerCapture(event.pointerId);
     }
-    syncKeyboardDirection();
+    syncInputDirection();
+  }
+
+  function handleCanvasPointerUp(event) {
+    if (event.pointerType !== "touch" || game.status !== GAME_STATUS.PLAYING) {
+      return;
+    }
+
+    event.preventDefault();
+    const now = performance.now();
+    const isDoubleTap = lastCanvasTap
+      && now - lastCanvasTap.time <= DOUBLE_TAP_INTERVAL_MS
+      && Math.hypot(event.clientX - lastCanvasTap.x, event.clientY - lastCanvasTap.y) <= DOUBLE_TAP_DISTANCE;
+    if (isDoubleTap) {
+      lastCanvasTap = null;
+      fireBullet();
+      return;
+    }
+
+    lastCanvasTap = { time: now, x: event.clientX, y: event.clientY };
   }
 
   function drawRoundedTile(x, y, size, inset, radius) {
@@ -722,6 +754,7 @@
   ui.startButton.addEventListener("click", handleOverlayAction);
   ui.restartButton.addEventListener("click", startGame);
   ui.pauseButton.addEventListener("click", togglePause);
+  canvas.addEventListener("pointerup", handleCanvasPointerUp);
   directionButtons.forEach((button) => {
     button.addEventListener("pointerdown", handleDirectionPointerDown);
     ["pointerup", "pointercancel", "pointerleave", "lostpointercapture"].forEach((eventName) => {
