@@ -406,6 +406,7 @@
     }
 
     if (!game.inputDirection) {
+      player.queuedDirection = null;
       player.direction = null;
     }
   }
@@ -514,8 +515,9 @@
   function syncInputDirection() {
     const activeDirections = Array.from(pressedDirections.values());
     game.inputDirection = activeDirections.at(-1) || touchDirection;
-    game.player.queuedDirection = game.inputDirection;
-    if (!game.inputDirection) {
+    if (game.inputDirection) {
+      game.player.queuedDirection = game.inputDirection;
+    } else {
       game.player.direction = null;
     }
   }

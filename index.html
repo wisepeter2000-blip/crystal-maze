@@ -47,6 +47,30 @@
             </div>
           </div>
 
+          <section class="control-panel" aria-labelledby="controlsTitle">
+            <div class="section-heading">
+              <span class="section-index">A</span>
+              <h2 id="controlsTitle">移動方式</h2>
+            </div>
+            <p class="control-hint">方向鍵或 WASD 移動；空白鍵發射光彈</p>
+            <div class="key-guide" aria-hidden="true">
+              <span class="key-spacer"></span><kbd>W / ↑</kbd><span class="key-spacer"></span>
+              <kbd>A / ←</kbd><kbd>S / ↓</kbd><kbd>D / →</kbd>
+            </div>
+            <p class="touch-hint">滑動迷宮轉向或點方向持續前進；快速點兩下發射光束</p>
+            <div class="direction-pad" aria-label="觸控方向控制">
+              <span class="pad-spacer" aria-hidden="true"></span>
+              <button class="direction-button" type="button" data-direction="up" aria-label="向上移動"><span aria-hidden="true">↑</span></button>
+              <span class="pad-spacer" aria-hidden="true"></span>
+              <button class="direction-button" type="button" data-direction="left" aria-label="向左移動"><span aria-hidden="true">←</span></button>
+              <span class="pad-center" aria-hidden="true">✦</span>
+              <button class="direction-button" type="button" data-direction="right" aria-label="向右移動"><span aria-hidden="true">→</span></button>
+              <span class="pad-spacer" aria-hidden="true"></span>
+              <button class="direction-button" type="button" data-direction="down" aria-label="向下移動"><span aria-hidden="true">↓</span></button>
+              <span class="pad-spacer" aria-hidden="true"></span>
+            </div>
+          </section>
+
           <div class="status-row">
             <p id="gameStatus" class="game-status" role="status" aria-live="polite" aria-atomic="true">準備開始探索。</p>
             <div class="game-actions">
@@ -56,7 +80,7 @@
           </div>
         </section>
 
-        <aside class="info-column" aria-label="遊戲資訊與操作">
+        <aside class="info-column" aria-label="遊戲資訊">
           <section class="score-panel" aria-label="本局狀態">
             <div class="score-heading">
               <span class="section-label">本局分數</span>
@@ -71,30 +95,6 @@
             <div class="stats-line dots-line">
               <span class="section-label">晶點進度</span>
               <span class="dot-count" id="dotCount">0 / 0</span>
-            </div>
-          </section>
-
-          <section class="control-panel" aria-labelledby="controlsTitle">
-            <div class="section-heading">
-              <span class="section-index">A</span>
-              <h2 id="controlsTitle">移動方式</h2>
-            </div>
-            <p class="control-hint">方向鍵或 WASD 移動；空白鍵發射光彈</p>
-            <div class="key-guide" aria-hidden="true">
-              <span class="key-spacer"></span><kbd>↑</kbd><span class="key-spacer"></span>
-              <kbd>A</kbd><kbd>↓</kbd><kbd>D</kbd>
-            </div>
-            <p class="touch-hint">滑動迷宮轉向或點方向持續前進；快速點兩下發射光束</p>
-            <div class="direction-pad" aria-label="觸控方向控制">
-              <span class="pad-spacer" aria-hidden="true"></span>
-              <button class="direction-button" type="button" data-direction="up" aria-label="向上移動"><span aria-hidden="true">↑</span></button>
-              <span class="pad-spacer" aria-hidden="true"></span>
-              <button class="direction-button" type="button" data-direction="left" aria-label="向左移動"><span aria-hidden="true">←</span></button>
-              <span class="pad-center" aria-hidden="true">✦</span>
-              <button class="direction-button" type="button" data-direction="right" aria-label="向右移動"><span aria-hidden="true">→</span></button>
-              <span class="pad-spacer" aria-hidden="true"></span>
-              <button class="direction-button" type="button" data-direction="down" aria-label="向下移動"><span aria-hidden="true">↓</span></button>
-              <span class="pad-spacer" aria-hidden="true"></span>
             </div>
           </section>
 

@@ -101,13 +101,19 @@ a:focus-visible {
 .game-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 276px;
+  grid-template-areas: "game info";
   align-items: start;
   gap: 26px;
   padding-block: 34px 40px;
 }
 
-.game-panel,
+.game-panel {
+  grid-area: game;
+  min-width: 0;
+}
+
 .info-column {
+  grid-area: info;
   min-width: 0;
 }
 
@@ -441,7 +447,7 @@ h1 {
 .key-guide {
   width: max-content;
   display: grid;
-  grid-template-columns: repeat(3, 29px);
+  grid-template-columns: repeat(3, 52px);
   gap: 4px;
   margin: 10px auto 13px;
 }
@@ -577,6 +583,7 @@ kbd {
 
   .game-layout {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "game" "info";
     gap: 16px;
     padding-block: 22px 28px;
   }
@@ -592,9 +599,12 @@ kbd {
     grid-column: 1 / -1;
   }
 
-  .control-panel,
   .objective-panel {
     min-height: 100%;
+  }
+
+  .control-panel,
+  .objective-panel {
     padding: 14px;
   }
 
