@@ -65,8 +65,9 @@
   const GHOST_STEP_MS = 210;
   const BULLET_STEP_MS = 60;
   const FIRE_COOLDOWN_MS = 300;
-  const DOUBLE_TAP_INTERVAL_MS = 350;
-  const DOUBLE_TAP_DISTANCE = 36;
+  const DOUBLE_TAP_INTERVAL_MS = 600;
+  const DOUBLE_TAP_DISTANCE = 80;
+  const SWIPE_DIRECTION_THRESHOLD = 24;
   const COLORS = {
     wall: "#226354",
     floor: "#102a25",
@@ -97,6 +98,7 @@
   };
   const pressedDirections = new Map();
   let touchDirection = null;
+  let activeCanvasTouch = null;
   let lastCanvasTap = null;
 
   function isWalkable(maze, col, row) {
@@ -200,6 +202,7 @@
     game.bullets = [];
     game.nextShotAt = 0;
     touchDirection = null;
+    activeCanvasTouch = null;
     lastCanvasTap = null;
     pressedDirections.clear();
   }
@@ -238,7 +241,7 @@
     ui.pauseButton.disabled = false;
     ui.pauseButton.setAttribute("aria-pressed", "false");
     ui.pauseButton.textContent = "暫停";
-    announce("遊戲開始。使用方向鍵或 WASD 移動，空白鍵發射光彈。");
+    announce("遊戲開始。方向鍵或 WASD 移動、空白鍵發射；手機可滑動迷宮轉向，快速點兩下射擊。");
   }
 
   function pauseGame() {
@@ -320,6 +323,7 @@
     game.player.queuedDirection = null;
     game.inputDirection = null;
     touchDirection = null;
+    activeCanvasTouch = null;
     lastCanvasTap = null;
     pressedDirections.clear();
     game.collisionProtectionUntil = game.elapsedMs + 2000;
@@ -561,6 +565,7 @@
   function clearInput() {
     pressedDirections.clear();
     touchDirection = null;
+    activeCanvasTouch = null;
     lastCanvasTap = null;
     directionButtons.forEach((button) => button.classList.remove("is-active"));
     if (game.player) {
@@ -595,12 +600,41 @@
     syncInputDirection();
   }
 
-  function handleCanvasPointerUp(event) {
+  function handleCanvasPointerDown(event) {
     if (event.pointerType !== "touch" || game.status !== GAME_STATUS.PLAYING) {
       return;
     }
 
     event.preventDefault();
+    canvas.setPointerCapture(event.pointerId);
+    activeCanvasTouch = {
+      pointerId: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+    };
+  }
+
+  function handleCanvasPointerUp(event) {
+    if (event.pointerType !== "touch"
+      || game.status !== GAME_STATUS.PLAYING
+      || !activeCanvasTouch
+      || activeCanvasTouch.pointerId !== event.pointerId) {
+      return;
+    }
+
+    event.preventDefault();
+    const deltaX = event.clientX - activeCanvasTouch.x;
+    const deltaY = event.clientY - activeCanvasTouch.y;
+    activeCanvasTouch = null;
+    if (Math.hypot(deltaX, deltaY) >= SWIPE_DIRECTION_THRESHOLD) {
+      lastCanvasTap = null;
+      touchDirection = Math.abs(deltaX) > Math.abs(deltaY)
+        ? (deltaX < 0 ? "left" : "right")
+        : (deltaY < 0 ? "up" : "down");
+      syncInputDirection();
+      return;
+    }
+
     const now = performance.now();
     const isDoubleTap = lastCanvasTap
       && now - lastCanvasTap.time <= DOUBLE_TAP_INTERVAL_MS
@@ -612,6 +646,13 @@
     }
 
     lastCanvasTap = { time: now, x: event.clientX, y: event.clientY };
+  }
+
+  function handleCanvasPointerCancel(event) {
+    if (activeCanvasTouch && activeCanvasTouch.pointerId === event.pointerId) {
+      activeCanvasTouch = null;
+      lastCanvasTap = null;
+    }
   }
 
   function drawRoundedTile(x, y, size, inset, radius) {
@@ -754,7 +795,9 @@
   ui.startButton.addEventListener("click", handleOverlayAction);
   ui.restartButton.addEventListener("click", startGame);
   ui.pauseButton.addEventListener("click", togglePause);
+  canvas.addEventListener("pointerdown", handleCanvasPointerDown);
   canvas.addEventListener("pointerup", handleCanvasPointerUp);
+  canvas.addEventListener("pointercancel", handleCanvasPointerCancel);
   directionButtons.forEach((button) => {
     button.addEventListener("pointerdown", handleDirectionPointerDown);
     ["pointerup", "pointercancel", "pointerleave", "lostpointercapture"].forEach((eventName) => {

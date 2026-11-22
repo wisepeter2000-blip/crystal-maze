@@ -34,7 +34,7 @@
               width="544"
               height="544"
               role="img"
-              aria-label="迷宮遊戲畫面。使用方向鍵或 WASD 移動，按空白鍵發射光彈；手機可點方向按鈕持續前進，快速點迷宮兩下發射光束。收集所有晶點。"
+              aria-label="迷宮遊戲畫面。使用方向鍵或 WASD 移動，按空白鍵發射光彈；手機可在迷宮上滑動轉向或點方向按鈕持續前進，快速點迷宮兩下發射光束。收集所有晶點。"
             >
               您的瀏覽器不支援 Canvas；仍可使用下方的遊戲控制與狀態資訊。
             </canvas>
@@ -42,7 +42,7 @@
               <div class="overlay-mark" aria-hidden="true">✦</div>
               <p class="overlay-kicker" id="overlayKicker">準備好了嗎？</p>
               <h2 id="overlayTitle">迷宮正在等你</h2>
-              <p class="overlay-copy" id="overlayCopy">收集每一顆晶點，別讓巡獵者追上你。</p>
+              <p class="overlay-copy" id="overlayCopy">收集晶點並避開巡獵者。手機可滑動迷宮轉向，快速點兩下發射光束。</p>
               <button class="button button-primary" id="startButton" type="button">開始探索 <span aria-hidden="true">→</span></button>
             </div>
           </div>
@@ -84,7 +84,7 @@
               <span class="key-spacer"></span><kbd>↑</kbd><span class="key-spacer"></span>
               <kbd>A</kbd><kbd>↓</kbd><kbd>D</kbd>
             </div>
-            <p class="touch-hint">點方向持續前進；迷宮快速點兩下發射光束</p>
+            <p class="touch-hint">滑動迷宮轉向或點方向持續前進；快速點兩下發射光束</p>
             <div class="direction-pad" aria-label="觸控方向控制">
               <span class="pad-spacer" aria-hidden="true"></span>
               <button class="direction-button" type="button" data-direction="up" aria-label="向上移動"><span aria-hidden="true">↑</span></button>
