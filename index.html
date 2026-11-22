@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f2f3eb">
+    <title>晶脈迷城</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="src/game.js" defer></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="masthead">
+        <a class="brand" href="#main" aria-label="晶脈迷城首頁">
+          <span class="brand-mark" aria-hidden="true">◆</span>
+          <span class="brand-name">晶脈迷城</span>
+        </a>
+        <p class="masthead-note">收集晶點，走出迷宮</p>
+      </header>
+
+      <main id="main" class="game-layout">
+        <section class="game-panel" aria-labelledby="game-title">
+          <div class="panel-heading">
+            <div>
+              <p class="kicker">迷宮探索 01</p>
+              <h1 id="game-title">穿越晶脈</h1>
+            </div>
+            <p class="round-tag"><span class="round-indicator" aria-hidden="true"></span>單人遊戲</p>
+          </div>
+
+          <div class="board-frame" id="boardFrame" data-state="ready">
+            <canvas
+              id="gameCanvas"
+              width="544"
+              height="544"
+              role="img"
+              aria-label="迷宮遊戲畫面。使用方向鍵或 WASD 移動，按空白鍵發射光彈擊敗巡獵者，並收集所有晶點。"
+            >
+              您的瀏覽器不支援 Canvas；仍可使用下方的遊戲控制與狀態資訊。
+            </canvas>
+            <div class="game-overlay" id="gameOverlay" aria-labelledby="overlayTitle">
+              <div class="overlay-mark" aria-hidden="true">✦</div>
+              <p class="overlay-kicker" id="overlayKicker">準備好了嗎？</p>
+              <h2 id="overlayTitle">迷宮正在等你</h2>
+              <p class="overlay-copy" id="overlayCopy">收集每一顆晶點，別讓巡獵者追上你。</p>
+              <button class="button button-primary" id="startButton" type="button">開始探索 <span aria-hidden="true">→</span></button>
+            </div>
+          </div>
+
+          <div class="status-row">
+            <p id="gameStatus" class="game-status" role="status" aria-live="polite" aria-atomic="true">準備開始探索。</p>
+            <div class="game-actions">
+              <button class="button button-secondary" id="pauseButton" type="button" aria-pressed="false" disabled>暫停</button>
+              <button class="button button-quiet" id="restartButton" type="button">重新開始</button>
+            </div>
+          </div>
+        </section>
+
+        <aside class="info-column" aria-label="遊戲資訊與操作">
+          <section class="score-panel" aria-label="本局狀態">
+            <div class="score-heading">
+              <span class="section-label">本局分數</span>
+              <span class="score-spark" aria-hidden="true">✳</span>
+            </div>
+            <p class="score-value" id="scoreValue" aria-label="分數">0000</p>
+            <div class="score-divider"></div>
+            <div class="stats-line">
+              <span class="section-label">剩餘生命</span>
+              <span class="life-count" id="lifeCount" aria-label="剩餘 3 條生命">● ● ●</span>
+            </div>
+            <div class="stats-line dots-line">
+              <span class="section-label">晶點進度</span>
+              <span class="dot-count" id="dotCount">0 / 0</span>
+            </div>
+          </section>
+
+          <section class="control-panel" aria-labelledby="controlsTitle">
+            <div class="section-heading">
+              <span class="section-index">A</span>
+              <h2 id="controlsTitle">移動方式</h2>
+            </div>
+            <p class="control-hint">方向鍵或 WASD 移動；空白鍵發射光彈</p>
+            <div class="key-guide" aria-hidden="true">
+              <span class="key-spacer"></span><kbd>↑</kbd><span class="key-spacer"></span>
+              <kbd>A</kbd><kbd>↓</kbd><kbd>D</kbd>
+            </div>
+            <p class="touch-hint">或使用方向控制</p>
+            <div class="direction-pad" aria-label="觸控方向控制">
+              <span class="pad-spacer" aria-hidden="true"></span>
+              <button class="direction-button" type="button" data-direction="up" aria-label="向上移動"><span aria-hidden="true">↑</span></button>
+              <span class="pad-spacer" aria-hidden="true"></span>
+              <button class="direction-button" type="button" data-direction="left" aria-label="向左移動"><span aria-hidden="true">←</span></button>
+              <span class="pad-center" aria-hidden="true">✦</span>
+              <button class="direction-button" type="button" data-direction="right" aria-label="向右移動"><span aria-hidden="true">→</span></button>
+              <span class="pad-spacer" aria-hidden="true"></span>
+              <button class="direction-button" type="button" data-direction="down" aria-label="向下移動"><span aria-hidden="true">↓</span></button>
+              <span class="pad-spacer" aria-hidden="true"></span>
+            </div>
+          </section>
+
+          <section class="objective-panel" aria-labelledby="objectiveTitle">
+            <div class="section-heading">
+              <span class="section-index section-index-coral">B</span>
+              <h2 id="objectiveTitle">本局目標</h2>
+            </div>
+            <ul class="objective-list">
+              <li><span class="objective-icon icon-mint" aria-hidden="true">✦</span><span>收集全部晶點</span></li>
+              <li><span class="objective-icon icon-coral" aria-hidden="true">●</span><span>避開巡獵者</span></li>
+              <li><span class="objective-icon icon-yellow" aria-hidden="true">↗</span><span>生命歸零即結束</span></li>
+            </ul>
+          </section>
+
+          <p class="footer-note">一座迷宮 · 一次全新挑戰</p>
+        </aside>
+      </main>
+      <footer class="page-footer"><span>晶脈迷城</span><span>原創迷宮追逐遊戲</span></footer>
+    </div>
+  </body>
+</html>
